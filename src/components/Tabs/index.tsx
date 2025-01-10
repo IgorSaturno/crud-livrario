@@ -1,3 +1,4 @@
+import { useAppContext } from "../../Api/Context/AppContext";
 import { AuthorTable } from "../AuthorTable";
 import { BookTable } from "../BookTable";
 import { TabsContent, TabsRoot, TabsList, TabsTrigger } from "./styles";

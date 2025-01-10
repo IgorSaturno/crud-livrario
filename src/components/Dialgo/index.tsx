@@ -10,21 +10,11 @@ import {
 } from "./styles";
 import { AuthorForm } from "../AuthorForm";
 import { BookForm } from "../BookForm/index.tsx";
+import { useAppContext } from "../../Api/Context/AppContext.tsx";
 
-interface DialogAuthorProps {
-  onAddAuthor: (author: { id: string; name: string; email?: string }) => void;
-}
+export function DialogAuthor() {
+  const { addAuthor } = useAppContext();
 
-interface BookFormProps {
-  onAddBook: (book: {
-    id: string;
-    name: string;
-    pages?: number;
-    author_id: string;
-  }) => void;
-}
-
-export function DialogAuthor({ onAddAuthor }: DialogAuthorProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -45,7 +35,7 @@ export function DialogAuthor({ onAddAuthor }: DialogAuthorProps) {
           <DialogDescription>
             Adicione os dados do novo autor.
           </DialogDescription>
-          <AuthorForm onAddAuthor={onAddAuthor} />
+          <AuthorForm onAddAuthor={addAuthor} />
           <Dialog.Close asChild>
             <IconButton aria-label="Close">
               <X size={24} />
@@ -57,7 +47,9 @@ export function DialogAuthor({ onAddAuthor }: DialogAuthorProps) {
   );
 }
 
-export function DialogBook({ onAddBook }: BookFormProps) {
+export function DialogBook() {
+  const { addBook } = useAppContext();
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -77,7 +69,7 @@ export function DialogBook({ onAddBook }: BookFormProps) {
           <DialogDescription>
             Adicione os dados do novo livro.
           </DialogDescription>
-          <BookForm onAddBook={onAddBook} />
+          <BookForm onAddBook={addBook} />
           <Dialog.Close asChild>
             <IconButton aria-label="Close">
               <X size={24} />

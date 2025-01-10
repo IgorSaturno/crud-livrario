@@ -2,7 +2,7 @@ import { DialogAuthor, DialogBook } from "./components/Dialgo";
 import Tabs from "./components/Tabs";
 import { GlobalStyles } from "./styles/global";
 import styled from "styled-components";
-import { AppProvider } from "./Context/update";
+import { AppProvider } from "./Api/Context/AppContext";
 
 const ContainerButton = styled.div`
   display: flex;
