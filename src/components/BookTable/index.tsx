@@ -12,7 +12,8 @@ interface Book {
   name: string;
   pages?: number;
   authorName: string;
-  // resumBook: string;
+  cover?: string;
+  resumBook?: string;
 }
 
 interface BookTableProps {
@@ -37,8 +38,6 @@ export function BookTable({ books, onDelete }: BookTableProps) {
           <tr key={book.id}>
             <Dialog.Root>
               <td>{book.name}</td>
-
-              {/* <td>{book.resumBook}</td> */}
 
               <td>
                 <ContainerTriggerAndButton>
@@ -67,6 +66,28 @@ export function BookTable({ books, onDelete }: BookTableProps) {
                   <p>
                     <strong>Páginas:</strong> {book.pages || "Não informado"}
                   </p>
+
+                  <td>
+                    {book.cover && (
+                      <div style={{ marginTop: "20px" }}>
+                        <img
+                          src={book.cover}
+                          alt="Capa do Livro"
+                          style={{
+                            width: "150px",
+                            height: "225px",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
+                    )}
+                  </td>
+
+                  {book.resumBook && (
+                    <p>
+                      <strong>Resumo:</strong> {book.resumBook}
+                    </p>
+                  )}
                   <Dialog.Close asChild>
                     <button
                       style={{
