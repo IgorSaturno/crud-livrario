@@ -47,7 +47,7 @@ export const Form = styled.form`
 `;
 
 export const Label = styled.label`
-  font-size: 15px;
+  font-size: 16px;
   color: #6550b9;
   width: 90%;
   display: flex;
@@ -70,5 +70,32 @@ export const Input = styled.input`
   height: 35px;
   &:focus {
     box-shadow: 0 0 0 2px #aa99ec;
+  }
+  &::placeholder {
+    color: #6550b9;
+  }
+`;
+
+export const Textarea = styled.textarea`
+  min-height: 120px;
+  width: 100%;
+  resize: vertical;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 10px;
+  box-shadow: 0 0 0 1px #c2b5f5;
+  outline: none;
+  white-space: pre-wrap;
+  font-size: 16px;
+  font-family: "roboto";
+  color: #6550b9;
+  font &:focus {
+    border-color: #c4b5fd;
+    box-shadow: 0 0 0 2px #aa99ec;
+  }
+
+  &::placeholder {
+    font-family: inherit;
+    color: #6550b9;
   }
 `;

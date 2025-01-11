@@ -1,9 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { Eye, Trash } from "phosphor-react";
+import { Eye, File, Trash } from "phosphor-react";
 import {
   Button,
   ContainerTriggerAndButton,
   DialogContent,
+  DialogDescription,
   Table,
 } from "./styles";
 
@@ -28,8 +29,6 @@ export function BookTable({ books, onDelete }: BookTableProps) {
       <thead>
         <tr>
           <th>Nome</th>
-
-          {/* <th>Resumo</th> */}
           <th>Ações</th>
         </tr>
       </thead>
@@ -60,34 +59,27 @@ export function BookTable({ books, onDelete }: BookTableProps) {
                   <Dialog.Title id="dialog-book-table-title">
                     {book.name}
                   </Dialog.Title>
-                  <p>
-                    <strong>Autor:</strong> {book.authorName}
-                  </p>
-                  <p>
-                    <strong>Páginas:</strong> {book.pages || "Não informado"}
-                  </p>
 
-                  <td>
-                    {book.cover && (
-                      <div style={{ marginTop: "20px" }}>
-                        <img
-                          src={book.cover}
-                          alt="Capa do Livro"
-                          style={{
-                            width: "150px",
-                            height: "225px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </td>
+                  <DialogDescription>{book.authorName}</DialogDescription>
 
                   {book.resumBook && (
-                    <p>
-                      <strong>Resumo:</strong> {book.resumBook}
+                    <p style={{ marginTop: "20px", whiteSpace: "pre-wrap" }}>
+                      {book.resumBook}
                     </p>
                   )}
+
+                  <p
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "end",
+                      marginTop: "20px",
+                    }}
+                  >
+                    <File size={20} />{" "}
+                    {book.pages ? `${book.pages} páginas` : "Não informado"}
+                  </p>
+
                   <Dialog.Close asChild>
                     <button
                       style={{

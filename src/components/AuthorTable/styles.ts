@@ -53,7 +53,7 @@ export const DialogTitle = styled(Dialog.Title)`
   margin: 0;
   font-weight: 500;
   color: #211f26;
-  font-size: 17px;
+  font-size: 23px;
 `;
 
 export const DialogDescription = styled(Dialog.Description)`

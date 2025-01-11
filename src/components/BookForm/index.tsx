@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Select from "@radix-ui/react-select";
-import * as Avatar from "@radix-ui/react-avatar";
+
 import {
   Form,
   FormGroup,
@@ -10,8 +10,11 @@ import {
   SelectContent,
   SelectTrigger,
   StyledItem,
+  Textarea,
 } from "./styles";
 import { Button } from "../Dialgo/styles";
+import { Book } from "../../@types/styled";
+import { ErrorMessage } from "@hookform/error-message";
 
 interface BookFormData {
   name: string;
@@ -39,9 +42,14 @@ interface BookFormProps {
 }
 
 export function BookForm({ onAddBook }: BookFormProps) {
-  const { register, handleSubmit, reset, setValue } = useForm<BookFormData>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<BookFormData>();
   const [authors, setAuthors] = useState<Author[]>([]);
-  const [coverImage, setCoverImage] = useState<string | null>(null);
 
   useEffect(() => {
     const storedAuthors = JSON.parse(localStorage.getItem("authors") || "[]");
@@ -49,6 +57,16 @@ export function BookForm({ onAddBook }: BookFormProps) {
   }, []);
 
   const onSubmit = (data: BookFormData) => {
+    const books = JSON.parse(localStorage.getItem("books") || "[]");
+
+    const isDuplicate = books.some(
+      (book: Book) => book.name.toLowerCase() === data.name.toLowerCase()
+    );
+    if (isDuplicate) {
+      alert("Livro já cadastrado.");
+      return;
+    }
+
     const selectedAuthor = authors.find(
       (author) => author.id === data.author_id
     );
@@ -56,58 +74,88 @@ export function BookForm({ onAddBook }: BookFormProps) {
       id: Date.now().toString(),
       ...data,
       authorName: selectedAuthor?.name || "Autor desconhecido",
-      coverImage,
     };
 
     onAddBook(newBook);
     reset();
-    setCoverImage(null);
-    alert("Livro cadastrado com sucesso!");
-  };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCoverImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+    alert("Livro cadastrado com sucesso!");
   };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormGroup>
         <Label>Nome</Label>
-        <Input {...register("name", { required: true })} />
+        <div>
+          <Input
+            type="text"
+            placeholder="Corte de espinhos e rosas..."
+            {...register("name", {
+              required: "O nome é obrigatório",
+              minLength: {
+                value: 3,
+                message: "O nome deve ter no mínimo 3 caracteres.",
+              },
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]+$/,
+                message: "O nome deve conter apenas letras.",
+              },
+            })}
+          />
+
+          <ErrorMessage
+            errors={errors}
+            name="name"
+            render={({ message }) => (
+              <div
+                style={{ fontSize: "12px", color: "red", marginTop: "12px" }}
+                className="error"
+              >
+                {message}
+              </div>
+            )}
+          />
+        </div>
       </FormGroup>
 
       <FormGroup>
         <Label htmlFor="author-select">Autor</Label>
-        <Select.Root onValueChange={(value) => setValue("author_id", value)}>
-          <SelectTrigger id="author-select" aria-label="Selecione um autor">
-            <Select.Value />
-          </SelectTrigger>
-          <Select.Portal>
-            <SelectContent position="popper">
-              <Select.ScrollUpButton />
-              <Select.Viewport>
-                {authors.map((author) => (
-                  <StyledItem
-                    key={author.id}
-                    value={author.id}
-                    aria-label={`Autor: ${author.name}`}
-                  >
-                    <Select.ItemText>{author.name}</Select.ItemText>
-                  </StyledItem>
-                ))}
-              </Select.Viewport>
-              <Select.ScrollDownButton />
-            </SelectContent>
-          </Select.Portal>
-        </Select.Root>
-        <Input type="hidden" {...register("author_id", { required: true })} />
+        <div>
+          <Select.Root onValueChange={(value) => setValue("author_id", value)}>
+            <SelectTrigger id="author-select" aria-label="Selecione um autor">
+              <Select.Value placeholder="Selecione um autor" />
+            </SelectTrigger>
+            <Select.Portal>
+              <SelectContent position="popper">
+                <Select.ScrollUpButton />
+                <Select.Viewport>
+                  {authors.map((author) => (
+                    <StyledItem
+                      key={author.id}
+                      value={author.id}
+                      aria-label={`Autor: ${author.name}`}
+                    >
+                      <Select.ItemText>{author.name}</Select.ItemText>
+                    </StyledItem>
+                  ))}
+                </Select.Viewport>
+                <Select.ScrollDownButton />
+              </SelectContent>
+            </Select.Portal>
+          </Select.Root>
+
+          {errors.author_id && (
+            <p style={{ fontSize: "12px", color: "red", marginTop: "12px" }}>
+              {errors.author_id.message}
+            </p>
+          )}
+        </div>
+        <Input
+          type="hidden"
+          {...register("author_id", {
+            required: "É necessário selecionar um autor.",
+          })}
+        />
       </FormGroup>
 
       <FormGroup>
@@ -117,27 +165,13 @@ export function BookForm({ onAddBook }: BookFormProps) {
 
       <FormGroup>
         <Label htmlFor="resumBook">Resumo</Label>
-        <textarea
+        <Textarea
           id="resumBook"
           {...register("resumBook")}
           rows={4}
+          wrap="hard"
           placeholder="Escreva o resumo do livro aqui"
         />
-      </FormGroup>
-
-      <FormGroup>
-        <Label>Capa do Livro</Label>
-        <Input type="file" accept="image/" onChange={handleImageUpload} />
-        {coverImage && (
-          <Avatar.Root>
-            <Avatar.Image
-              src={coverImage}
-              alt="Preview"
-              style={{ width: "100px", height: "150px", objectFit: "cover" }}
-            />
-            <Avatar.Fallback>Sem Capa</Avatar.Fallback>
-          </Avatar.Root>
-        )}
       </FormGroup>
 
       <Button type="submit">Salvar</Button>

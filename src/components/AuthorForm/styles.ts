@@ -7,13 +7,13 @@ export const Form = styled.form`
   gap: 0.75rem;
 `;
 
-export const FormgGroup = styled.div`
+export const FormGroup = styled.div`
   display: grid;
   grid-template-columns: 1fr 5fr;
 `;
 
 export const Label = styled.label`
-  font-size: 15px;
+  font-size: 12px;
   color: #6550b9;
   width: 90%;
   display: flex;
@@ -30,13 +30,35 @@ export const Input = styled.input`
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  font-size: 15px;
+  font-size: 12px;
   line-height: 1;
   color: #6550b9;
   border: none;
   box-shadow: 0 0 0 1px #c2b5f5;
   height: 35px;
   &:focus {
+    box-shadow: 0 0 0 2px #aa99ec;
+  }
+
+  &::placeholder {
+    color: #6550b9;
+  }
+`;
+
+export const Textarea = styled.textarea`
+  min-height: 120px;
+  width: 100%;
+  resize: vertical;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 10px;
+  box-shadow: 0 0 0 1px #c2b5f5;
+  outline: none;
+  font-size: 12px;
+  color: #6550b9;
+
+  &:focus {
+    border-color: #c4b5fd;
     box-shadow: 0 0 0 2px #aa99ec;
   }
 `;

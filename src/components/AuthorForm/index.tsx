@@ -1,21 +1,42 @@
 import { useForm } from "react-hook-form";
 import { Button } from "../Dialgo/styles";
-import { Form, FormgGroup, Input, Label } from "./styles";
+import { Form, FormGroup, Input, Label, Textarea } from "./styles";
+import { Author } from "../../@types/styled";
+import { ErrorMessage } from "@hookform/error-message";
 
 interface AuthorFormData {
   name: string;
   email?: string;
+  bio?: string;
 }
 
 interface AuthFormProps {
-  onAddAuthor: (author: { id: string; name: string; email?: string }) => void;
+  onAddAuthor: (author: {
+    id: string;
+    name: string;
+    email?: string;
+    bio?: string;
+  }) => void;
 }
 
 export function AuthorForm({ onAddAuthor }: AuthFormProps) {
-  const { register, handleSubmit, reset } = useForm<AuthorFormData>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<AuthorFormData>();
 
   const onSubmit = (data: AuthorFormData) => {
     const authors = JSON.parse(localStorage.getItem("authors") || "[]");
+    console.log(errors);
+    const isDuplicate = authors.some(
+      (author: Author) => author.name.toLowerCase() === data.name.toLowerCase()
+    );
+    if (isDuplicate) {
+      alert("Autor já cadastrado.");
+      return;
+    }
 
     const newAuthor = { id: Date.now().toString(), ...data };
     onAddAuthor(newAuthor);
@@ -27,14 +48,65 @@ export function AuthorForm({ onAddAuthor }: AuthFormProps) {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormgGroup>
+      <FormGroup>
         <Label>Nome:</Label>
-        <Input {...register("name", { required: true })} />
-      </FormgGroup>
-      <FormgGroup>
+        <div>
+          <Input
+            type="text"
+            placeholder="Sarah J. Mass"
+            {...register("name", {
+              required: "O nome é obrigatório",
+              minLength: {
+                value: 3,
+                message: "O nome deve ter no mínimo 3 caracteres.",
+              },
+            })}
+          />
+
+          <ErrorMessage
+            errors={errors}
+            name="name"
+            render={({ message }) => (
+              <div
+                style={{ fontSize: "12px", color: "red", marginTop: "12px" }}
+                className="error"
+              >
+                {message}
+              </div>
+            )}
+          />
+        </div>
+      </FormGroup>
+      <FormGroup>
         <Label>Email:</Label>
-        <Input {...register("email")} />
-      </FormgGroup>
+        <div>
+          <Input
+            placeholder="johndoe@..."
+            {...register("email", {
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: "Formato de email inválido",
+              },
+            })}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="email"
+            render={({ message }) => (
+              <div
+                style={{ fontSize: "12px", color: "red", marginTop: "12px" }}
+                className="error"
+              >
+                {message}
+              </div>
+            )}
+          />
+        </div>
+      </FormGroup>
+      <FormGroup>
+        <Label>Biografia:</Label>
+        <Textarea maxLength={250} {...register("bio")} />
+      </FormGroup>
 
       <Button className="green" type="submit">
         Salvar

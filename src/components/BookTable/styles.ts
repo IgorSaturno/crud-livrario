@@ -49,6 +49,13 @@ export const DialogContent = styled(Dialog.Content)`
   }
 `;
 
+export const DialogDescription = styled(Dialog.Description)`
+  margin: 10px 0 20px;
+  color: #65636d;
+  font-size: 15px;
+  line-height: 1.5;
+`;
+
 export const Button = styled.button`
   border: none;
   background: none;

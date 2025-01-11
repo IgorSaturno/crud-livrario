@@ -13,6 +13,7 @@ interface Author {
   id: string;
   name: string;
   email?: string;
+  bio?: string;
 }
 
 interface Book {
@@ -80,19 +81,23 @@ export function AuthorTable({ authors, books, onDelete }: AuthorTableProps) {
                       <DialogTitle id="dialog-author-table-title">
                         {author.name}
                       </DialogTitle>
-                      <DialogDescription>Resumo</DialogDescription>
-                      <p>
-                        <strong>E-mail:</strong>{" "}
+                      <DialogDescription>
+                        {author.bio || "Não informado"}
+                      </DialogDescription>
+                      <p style={{ marginBottom: "20px", fontSize: "15px" }}>
                         {author.email || "Não informado"}
                       </p>
-                      <p>
+                      <p style={{ marginBottom: "10px" }}>
                         <strong>Livros associados:</strong>
                       </p>
                       {associatedBooks.length > 0 ? (
                         <ul style={{ listStyle: "none" }}>
                           {associatedBooks.map((book) => (
-                            <li key={book.id}>
-                              <strong>Nome:</strong> {book.name} <br />
+                            <li
+                              style={{ marginBottom: "10px", fontSize: "15px" }}
+                              key={book.id}
+                            >
+                              {book.name} <br />
                             </li>
                           ))}
                         </ul>

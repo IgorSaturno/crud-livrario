@@ -41,13 +41,13 @@ export const DialogTitle = styled(Dialog.Title)`
   margin: 0;
   font-weight: 500;
   color: #211f26;
-  font-size: 17px;
+  font-size: 24px;
 `;
 
 export const DialogDescription = styled(Dialog.Description)`
   margin: 10px 0 20px;
   color: #65636d;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.5;
 `;
 
@@ -114,7 +114,7 @@ export const Fieldset = styled.fieldset`
 `;
 
 export const Label = styled.label`
-  font-size: 15px;
+  font-size: 16px;
   color: #6550b9;
   width: 90px;
   text-align: right;

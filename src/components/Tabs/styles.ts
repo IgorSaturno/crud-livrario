@@ -49,10 +49,12 @@ export const TabsTrigger = styled(Tabs.Trigger)`
     border-top-right-radius: 6px;
   }
   &:hover {
-    color: #6550b9;
+    background-color: #f2eff3;
   }
   &[data-state="active"] {
     color: #6550b9;
+    font-weight: 500;
+    background: #f2eff3;
     box-shadow: inset 0 -1px 0 0 currentColor, 0 1px 0 0 currentColor;
   }
   &:focus {
