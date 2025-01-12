@@ -20,7 +20,7 @@ interface BookFormData {
   name: string;
   pages?: number;
   author_id: string;
-  cover?: string;
+
   resumBook?: string;
 }
 
@@ -36,7 +36,7 @@ interface BookFormProps {
     pages?: number;
     author_id: string;
     authorName: string;
-    cover?: string;
+
     resumBook?: string;
   }) => void;
 }
@@ -57,7 +57,10 @@ export function BookForm({ onAddBook }: BookFormProps) {
   }, []);
 
   const onSubmit = (data: BookFormData) => {
-    const books = JSON.parse(localStorage.getItem("books") || "[]");
+    // console.log("Dados enviados", data);
+
+    const books: Book[] = JSON.parse(localStorage.getItem("books") || "[]");
+    // console.log("Livros antes:", books);
 
     const isDuplicate = books.some(
       (book: Book) => book.name.toLowerCase() === data.name.toLowerCase()
@@ -76,6 +79,10 @@ export function BookForm({ onAddBook }: BookFormProps) {
       authorName: selectedAuthor?.name || "Autor desconhecido",
     };
 
+    books.push(newBook);
+    localStorage.setItem("books", JSON.stringify(books));
+    console.log("Livros após a adição:", books);
+
     onAddBook(newBook);
     reset();
 
@@ -89,12 +96,16 @@ export function BookForm({ onAddBook }: BookFormProps) {
         <div>
           <Input
             type="text"
-            placeholder="Corte de espinhos e rosas..."
+            placeholder="Ex:Corte de espinhos e rosas..."
             {...register("name", {
               required: "O nome é obrigatório",
               minLength: {
                 value: 3,
                 message: "O nome deve ter no mínimo 3 caracteres.",
+              },
+              maxLength: {
+                value: 40,
+                message: "O nome não pode exceder 40 caracteres.",
               },
               pattern: {
                 value: /^[A-Za-zÀ-ÿ\s]+$/,
@@ -144,18 +155,26 @@ export function BookForm({ onAddBook }: BookFormProps) {
             </Select.Portal>
           </Select.Root>
 
-          {errors.author_id && (
-            <p style={{ fontSize: "12px", color: "red", marginTop: "12px" }}>
-              {errors.author_id.message}
-            </p>
-          )}
+          <Input
+            type="hidden"
+            {...register("author_id", {
+              required: "É necessário selecionar um autor.",
+            })}
+          />
+
+          <ErrorMessage
+            errors={errors}
+            name="author_id"
+            render={({ message }) => (
+              <div
+                style={{ fontSize: "12px", color: "red", marginTop: "12px" }}
+                className="error"
+              >
+                {message}
+              </div>
+            )}
+          />
         </div>
-        <Input
-          type="hidden"
-          {...register("author_id", {
-            required: "É necessário selecionar um autor.",
-          })}
-        />
       </FormGroup>
 
       <FormGroup>
@@ -174,7 +193,9 @@ export function BookForm({ onAddBook }: BookFormProps) {
         />
       </FormGroup>
 
-      <Button type="submit">Salvar</Button>
+      <Button type="submit" className="green">
+        Salvar
+      </Button>
     </Form>
   );
 }

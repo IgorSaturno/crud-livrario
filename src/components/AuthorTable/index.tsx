@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { Eye, Trash } from "phosphor-react";
+import { Eye, Trash, X } from "phosphor-react";
 import {
   ButtonAuthorTable,
   ContainerButtonAuthorTable,
@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "./styles";
+import { IconButton } from "../Dialgo/styles";
 
 interface Author {
   id: string;
@@ -26,7 +27,7 @@ interface Book {
 interface AuthorTableProps {
   authors: Author[];
   books: Book[];
-  onEdit: (id: string) => void;
+
   onDelete: (id: string) => void;
 }
 
@@ -49,8 +50,6 @@ export function AuthorTable({ authors, books, onDelete }: AuthorTableProps) {
         </thead>
         <tbody>
           {authors.map((author) => {
-            console.log(author.id, "VERIFICANDO ID");
-
             const associatedBooks = books.filter(
               (book) => book.author_id === author.id
             );
@@ -59,17 +58,16 @@ export function AuthorTable({ authors, books, onDelete }: AuthorTableProps) {
               <tr key={author.id}>
                 <Dialog.Root>
                   <td>{author.name}</td>
-                  <td>{author.email}</td>
+                  <td style={{ width: "20px" }}>{author.email}</td>
                   <td>
                     <ContainerButtonAuthorTable>
                       <Dialog.Trigger asChild>
-                        {/* <ButtonAuthorTable onClick={() => onEdit(author.id)}> */}
                         <ButtonAuthorTable>
-                          <Eye size={20} />
+                          <Eye className="ph-eye" size={20} />
                         </ButtonAuthorTable>
                       </Dialog.Trigger>
                       <ButtonAuthorTable onClick={() => onDelete(author.id)}>
-                        <Trash size={20} />
+                        <Trash className="ph-trash" size={20} />
                       </ButtonAuthorTable>
                     </ContainerButtonAuthorTable>
                   </td>
@@ -92,18 +90,24 @@ export function AuthorTable({ authors, books, onDelete }: AuthorTableProps) {
                       </p>
                       {associatedBooks.length > 0 ? (
                         <ul style={{ listStyle: "none" }}>
-                          {associatedBooks.map((book) => (
+                          {associatedBooks.map(({ id, name }) => (
                             <li
                               style={{ marginBottom: "10px", fontSize: "15px" }}
-                              key={book.id}
+                              key={id}
                             >
-                              {book.name} <br />
+                              {name}
                             </li>
                           ))}
                         </ul>
                       ) : (
                         <p>Este autor não possui livros associados.</p>
                       )}
+
+                      <Dialog.Close asChild>
+                        <IconButton aria-label="Close">
+                          <X className="ph-x" size={24} />
+                        </IconButton>
+                      </Dialog.Close>
                     </DialogContent>
                   </Dialog.Portal>
                 </Dialog.Root>

@@ -13,12 +13,7 @@ export default function Tabs() {
       </TabsList>
 
       <TabsContent value="authors">
-        <AuthorTable
-          authors={authors}
-          books={books}
-          onEdit={(id) => alert(`Editar author com ID: ${id}`)}
-          onDelete={deleteAuthor}
-        />
+        <AuthorTable authors={authors} books={books} onDelete={deleteAuthor} />
       </TabsContent>
 
       <TabsContent value="books">

@@ -53,12 +53,20 @@ export function AuthorForm({ onAddAuthor }: AuthFormProps) {
         <div>
           <Input
             type="text"
-            placeholder="Sarah J. Mass"
+            placeholder="Nome do autor"
             {...register("name", {
               required: "O nome é obrigatório",
               minLength: {
                 value: 3,
                 message: "O nome deve ter no mínimo 3 caracteres.",
+              },
+              maxLength: {
+                value: 40,
+                message: "O nome não pode exceder 40 caracteres.",
+              },
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s.'-]+$/,
+                message: "O nome deve conter apenas letras.",
               },
             })}
           />
@@ -84,7 +92,7 @@ export function AuthorForm({ onAddAuthor }: AuthFormProps) {
             placeholder="johndoe@..."
             {...register("email", {
               pattern: {
-                value: /^\S+@\S+$/i,
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
                 message: "Formato de email inválido",
               },
             })}

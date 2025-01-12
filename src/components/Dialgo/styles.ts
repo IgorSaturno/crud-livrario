@@ -40,7 +40,7 @@ export const DialogContent = styled(Dialog.Content)`
 export const DialogTitle = styled(Dialog.Title)`
   margin: 0;
   font-weight: 500;
-  color: #211f26;
+  color: #6550b9;
   font-size: 24px;
 `;
 
@@ -93,7 +93,7 @@ export const IconButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #6550b9;
+  color: #000000;
   position: absolute;
   top: 10px;
   right: 10px;

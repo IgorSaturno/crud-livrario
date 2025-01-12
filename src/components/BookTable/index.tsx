@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { Eye, File, Trash } from "phosphor-react";
+import { Eye, File, Trash, X } from "phosphor-react";
 import {
   Button,
   ContainerTriggerAndButton,
@@ -7,19 +7,20 @@ import {
   DialogDescription,
   Table,
 } from "./styles";
+import { IconButton } from "../Dialgo/styles";
 
 interface Book {
   id: string;
   name: string;
   pages?: number;
   authorName: string;
-  cover?: string;
+
   resumBook?: string;
 }
 
 interface BookTableProps {
   books: Book[];
-  // onEdit: (id: string) => void;
+
   onDelete: (id: string) => void;
 }
 
@@ -42,11 +43,11 @@ export function BookTable({ books, onDelete }: BookTableProps) {
                 <ContainerTriggerAndButton>
                   <Dialog.Trigger asChild>
                     <Button>
-                      <Eye size={20} />
+                      <Eye className="ph-eye" size={20} />
                     </Button>
                   </Dialog.Trigger>
                   <Button onClick={() => onDelete(book.id)}>
-                    <Trash size={20} />
+                    <Trash className="ph-trash" size={20} />
                   </Button>
                 </ContainerTriggerAndButton>
               </td>
@@ -81,20 +82,11 @@ export function BookTable({ books, onDelete }: BookTableProps) {
                   </p>
 
                   <Dialog.Close asChild>
-                    <button
-                      style={{
-                        marginTop: "20px",
-                        padding: "10px",
-                        background: "#007bff",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "4px",
-                        display: "flex",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      Fechar
-                    </button>
+                    <Dialog.Close asChild>
+                      <IconButton aria-label="Close">
+                        <X className="ph-x" size={24} />
+                      </IconButton>
+                    </Dialog.Close>
                   </Dialog.Close>
                 </DialogContent>
               </Dialog.Portal>

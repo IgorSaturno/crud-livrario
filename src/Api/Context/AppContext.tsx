@@ -14,13 +14,15 @@ interface AppContextProps {
 
 export const AppContext = createContext<AppContextProps | undefined>(undefined);
 
-export function AppProvider({ children }: { children: ReactNode }) {
+export function AppContextProvider({ children }: { children: ReactNode }) {
   const [authors, setAuthors] = useState<Author[]>(() =>
     JSON.parse(localStorage.getItem("authors") || "[]")
   );
 
   const [books, setBooks] = useState<Book[]>(() =>
-    JSON.parse(localStorage.getItem("books") || "[]")
+    Array.isArray(JSON.parse(localStorage.getItem("books") || "[]"))
+      ? JSON.parse(localStorage.getItem("books") || "[]")
+      : []
   );
 
   const addAuthor = (author: Author) => {
@@ -40,7 +42,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const addBook = (book: Book) => {
     const isDuplicate = books.some(
       (existingBook) =>
-        existingBook.name.toLowerCase() === book.name.toLowerCase()
+        existingBook.name.toLowerCase() === book.name.toLowerCase() &&
+        existingBook.author_id === book.author_id
     );
     if (isDuplicate) {
       alert("Livro já cadastrado.");
@@ -85,7 +88,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const submitBook = (data: Omit<Book, "id" | "authorName">) => {
     const isDuplicate = books.some(
-      (book) => book.name.toLowerCase() === data.name.toLowerCase()
+      (book) =>
+        book.name.toLowerCase() === data.name.toLowerCase() &&
+        book.author_id === data.author_id
     );
     if (isDuplicate) {
       alert("Livro já cadastrado.");

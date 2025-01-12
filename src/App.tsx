@@ -2,7 +2,7 @@ import { DialogAuthor, DialogBook } from "./components/Dialgo";
 import Tabs from "./components/Tabs";
 import { GlobalStyles } from "./styles/global";
 import styled from "styled-components";
-import { AppProvider } from "./Api/Context/AppContext";
+import { AppContextProvider } from "./Api/Context/AppContext";
 
 const ContainerButton = styled.div`
   display: flex;
@@ -12,14 +12,14 @@ const ContainerButton = styled.div`
 
 function App() {
   return (
-    <AppProvider>
+    <AppContextProvider>
       <GlobalStyles />
       <ContainerButton>
         <DialogAuthor />
         <DialogBook />
       </ContainerButton>
       <Tabs />
-    </AppProvider>
+    </AppContextProvider>
   );
 }
 

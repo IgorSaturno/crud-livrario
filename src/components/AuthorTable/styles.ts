@@ -9,6 +9,7 @@ const contentShow = keyframes`
 
 export const Table = styled.table`
   width: 100%;
+  min-width: 480px;
   border-collapse: collapse;
 
   text-align: left;
