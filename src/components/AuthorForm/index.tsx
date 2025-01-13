@@ -29,7 +29,7 @@ export function AuthorForm({ onAddAuthor }: AuthFormProps) {
 
   const onSubmit = (data: AuthorFormData) => {
     const authors = JSON.parse(localStorage.getItem("authors") || "[]");
-    console.log(errors);
+
     const isDuplicate = authors.some(
       (author: Author) => author.name.toLowerCase() === data.name.toLowerCase()
     );

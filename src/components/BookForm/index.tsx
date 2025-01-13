@@ -57,10 +57,7 @@ export function BookForm({ onAddBook }: BookFormProps) {
   }, []);
 
   const onSubmit = (data: BookFormData) => {
-    // console.log("Dados enviados", data);
-
     const books: Book[] = JSON.parse(localStorage.getItem("books") || "[]");
-    // console.log("Livros antes:", books);
 
     const isDuplicate = books.some(
       (book: Book) => book.name.toLowerCase() === data.name.toLowerCase()
@@ -81,7 +78,6 @@ export function BookForm({ onAddBook }: BookFormProps) {
 
     books.push(newBook);
     localStorage.setItem("books", JSON.stringify(books));
-    console.log("Livros após a adição:", books);
 
     onAddBook(newBook);
     reset();
