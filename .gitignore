@@ -23,5 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-#arquivo
+
 component/component/bookform.cy.tsx
