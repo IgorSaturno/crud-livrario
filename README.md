@@ -4,7 +4,7 @@ Aplicação simples para gerenciar livros e autores, construída com React e Typ
 
 ## Funcionalidades
 
-- Criar, ler, atualizar e excluir livros e autores.
+- Criar, ler, excluir livros e autores.
 - Formulários para adicionar novas entradas.
 - Interface responsiva e fácil de usar.
 
